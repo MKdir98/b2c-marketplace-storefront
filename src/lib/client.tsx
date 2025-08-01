@@ -1,7 +1,5 @@
-import { liteClient as algoliasearch } from "algoliasearch/lite"
+// Replace Algolia with Elasticsearch API client
+import { createSearchClient } from './elasticsearch-client'
 
-const algoliaId = process.env.NEXT_PUBLIC_ALGOLIA_ID || "supersecret"
-const algoliaSearchKey =
-  process.env.NEXT_PUBLIC_ALGOLIA_SEARCH_KEY || "supersecret"
-
-export const client = algoliasearch(algoliaId, algoliaSearchKey)
+// Create the search client that calls our backend API
+export const client = createSearchClient()

@@ -1,6 +1,7 @@
 import { Suspense } from "react"
 import { ProductListingSkeleton } from "../ProductListingSkeleton/ProductListingSkeleton"
 import { AlgoliaProductsListing, ProductListing } from "@/components/sections"
+import { ElasticsearchProductsListing } from "@/components/sections/ProductListing/ElasticsearchProductsListing"
 import { TabsContent, TabsList } from "@/components/molecules"
 import { SellerReviewTab } from "@/components/cells"
 
@@ -33,15 +34,11 @@ export const SellerTabs = ({
       <TabsList list={tabsList} activeTab={tab} />
       <TabsContent value="products" activeTab={tab}>
         <Suspense fallback={<ProductListingSkeleton />}>
-          {!ALGOLIA_ID || !ALGOLIA_SEARCH_KEY ? (
-            <ProductListing showSidebar seller_id={seller_id} />
-          ) : (
-            <AlgoliaProductsListing
-              locale={locale}
-              seller_handle={seller_handle}
-              currency_code={currency_code}
-            />
-          )}
+          <ElasticsearchProductsListing
+            locale={locale}
+            seller_handle={seller_handle}
+            currency_code={currency_code}
+          />
         </Suspense>
       </TabsContent>
       <TabsContent value="reviews" activeTab={tab}>
