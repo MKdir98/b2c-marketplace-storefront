@@ -134,6 +134,12 @@ export default {
         secondary: "rgba(var(--content-action-on-secondary))",
         disabled: "rgba(var(--content-disabled))",
       },
+      fontFamily: {
+        'vazirmatn': ['var(--font-vazirmatn)', 'sans-serif'],
+        'vazir': ['Vazir', 'sans-serif'],
+        'funnel': ['var(--font-funnel-sans)', 'sans-serif'],
+        'sans': ['var(--font-vazirmatn)', 'ui-sans-serif', 'system-ui'],
+      },
     },
   },
   plugins: [],

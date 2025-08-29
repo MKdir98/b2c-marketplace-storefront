@@ -38,6 +38,7 @@ export const SellerTabs = ({
             locale={locale}
             seller_handle={seller_handle}
             currency_code={currency_code}
+            hideFilters
           />
         </Suspense>
       </TabsContent>

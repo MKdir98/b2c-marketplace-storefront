@@ -1,26 +1,24 @@
 import {
-  CartItemsFooter,
   CartItemsHeader,
   CartItemsProducts,
 } from "@/components/cells"
 import { HttpTypes } from "@medusajs/types"
 
-export const CartItems = ({ cart }: { cart: HttpTypes.StoreCart | null }) => {
+export const CartItems = ({ cart, showSellerHeader = true }: { cart: HttpTypes.StoreCart | null, showSellerHeader?: boolean }) => {
   if (!cart) return null
 
   const groupedItems: any = groupItemsBySeller(cart)
 
   return Object.keys(groupedItems).map((key) => (
     <div key={key} className="mb-4">
+      {showSellerHeader && (
       <CartItemsHeader seller={groupedItems[key]?.seller} />
+      )}
       <CartItemsProducts
         products={groupedItems[key].items || []}
         currency_code={cart.currency_code}
       />
-      <CartItemsFooter
-        currency_code={cart.currency_code}
-        price={cart.shipping_subtotal}
-      />
+      {/* Delivery footer hidden intentionally */}
     </div>
   ))
 }

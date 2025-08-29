@@ -172,6 +172,10 @@ export const addCustomerAddress = async (formData: FormData): Promise<any> => {
     province: formData.get("province") as string,
     is_default_billing: Boolean(formData.get("isDefaultBilling")),
     is_default_shipping: Boolean(formData.get("isDefaultShipping")),
+    metadata: {
+      latitude: formData.get("latitude") ? parseFloat(formData.get("latitude") as string) : null,
+      longitude: formData.get("longitude") ? parseFloat(formData.get("longitude") as string) : null,
+    }
   }
 
   const headers = {
@@ -209,32 +213,23 @@ export const deleteCustomerAddress = async (
     })
 }
 
-export const updateCustomerAddress = async (
-  formData: FormData
-): Promise<any> => {
-  const addressId = formData.get("addressId") as string
-
-  if (!addressId) {
-    return { success: false, error: "Address ID is required" }
-  }
-
+export const updateCustomerAddress = async (formData: FormData): Promise<any> => {
   const address = {
+    address_id: formData.get("addressId") as string,
     address_name: formData.get("address_name") as string,
     first_name: formData.get("first_name") as string,
     last_name: formData.get("last_name") as string,
     company: formData.get("company") as string,
     address_1: formData.get("address_1") as string,
-    address_2: formData.get("address_2") as string,
     city: formData.get("city") as string,
     postal_code: formData.get("postal_code") as string,
-    province: formData.get("province") as string,
     country_code: formData.get("country_code") as string,
-  } as HttpTypes.StoreUpdateCustomerAddress
-
-  const phone = formData.get("phone") as string
-
-  if (phone) {
-    address.phone = phone
+    phone: formData.get("phone") as string,
+    province: formData.get("province") as string,
+    metadata: {
+      latitude: formData.get("latitude") ? parseFloat(formData.get("latitude") as string) : null,
+      longitude: formData.get("longitude") ? parseFloat(formData.get("longitude") as string) : null,
+    }
   }
 
   const headers = {
@@ -242,8 +237,34 @@ export const updateCustomerAddress = async (
   }
 
   return sdk.store.customer
-    .updateAddress(addressId, address, {}, headers)
-    .then(async () => {
+    .updateAddress(address.address_id, address, {}, headers)
+    .then(async ({ customer }) => {
+      const customerCacheTag = await getCacheTag("customers")
+      revalidateTag(customerCacheTag)
+      return { success: true, error: null }
+    })
+    .catch((err) => {
+      return { success: false, error: err.toString() }
+    })
+}
+
+export const setDefaultCustomerAddress = async (
+  addressId: string,
+  type: 'shipping' | 'billing' = 'shipping'
+): Promise<any> => {
+  const headers = {
+    ...(await getAuthHeaders()),
+  }
+
+  // Since Medusa doesn't have a direct API for setting default addresses,
+  // we need to update the address with the default flag
+  const updateData = type === 'shipping' 
+    ? { is_default_shipping: true }
+    : { is_default_billing: true }
+
+  return sdk.store.customer
+    .updateAddress(addressId, updateData, {}, headers)
+    .then(async ({ customer }) => {
       const customerCacheTag = await getCacheTag("customers")
       revalidateTag(customerCacheTag)
       return { success: true, error: null }

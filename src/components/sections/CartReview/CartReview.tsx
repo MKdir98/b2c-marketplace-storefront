@@ -15,9 +15,6 @@ const Review = ({ cart }: { cart: any }) => {
 
   return (
     <div>
-      <div className="w-full mb-6">
-        <CartItems cart={cart} />
-      </div>
       <div className="w-full mb-6 border rounded-sm p-4">
         <CartSummary
           item_total={cart?.item_subtotal || 0}

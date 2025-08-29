@@ -1,0 +1,11 @@
+.product-card {
+  background-color: var(--dna-color-sandstone);
+  color: var(--dna-color-midnight);
+  border: 1px solid var(--dna-brand-reverse);
+  border-top: 0;
+  border-left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1 0 25%;
+}

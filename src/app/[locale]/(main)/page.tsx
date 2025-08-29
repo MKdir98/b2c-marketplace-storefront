@@ -1,36 +1,72 @@
 import {
-  AlgoliaTrendingListings,
-  BannerSection,
-  BlogSection,
   Hero,
-  HomeCategories,
-  HomePopularBrandsSection,
-  HomeProductSection,
-  ShopByStyleSection,
+  RothysProductShowcase,
+  SocialProofSection,
+  SustainabilitySection,
+  NewsletterSection,
+  SocialSection,
+  CategoryShowcase,
+  FanFaveSlingbacks,
+  MatchYourMini,
+  PopularCategories,
+  BestSellers,
+  FeaturedSellers,
+  SpecialOffers,
+  NewArrivals,
 } from "@/components/sections"
+import { useTranslations } from "next-intl"
 
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Home",
+  title: "innjaa - محصولات دست‌ساز و مد",
   description:
-    "Welcome to Mercur B2C Demo! Create a modern marketplace that you own and customize in every aspect with high-performance, fully customizable storefront.",
+    "بازارگاه آنلاین محصولات دست‌ساز، مد، الکترونیکی و خانگی با کیفیت عالی و قیمت مناسب.",
   openGraph: {
-    title: "Mercur B2C Demo - Marketplace Storefront",
+    title: "innjaa - محصولات دست‌ساز و مد",
     description:
-      "Welcome to Mercur B2C Demo! Create a modern marketplace that you own and customize in every aspect with high-performance, fully customizable storefront.",
+      "بازارگاه آنلاین محصولات دست‌ساز، مد، الکترونیکی و خانگی با کیفیت عالی و قیمت مناسب.",
     url: process.env.NEXT_PUBLIC_BASE_URL,
-    siteName: "Mercur B2C Demo - Marketplace Storefront",
+    siteName: "innjaa",
     type: "website",
     images: [
       {
-        url: "/B2C_Storefront_Open_Graph.png",
+        url: "/images/rothys/products/max-mary-jane-syra.jpg",
         width: 1200,
         height: 630,
-        alt: "Mercur B2C Demo - Marketplace Storefront",
+        alt: "innjaa - محصولات دست‌ساز و مد",
       },
     ],
   },
+}
+
+function HomeContent({ locale }: { locale: string }) {
+  const t = useTranslations("home.sections")
+  
+  return (
+    <main className="flex flex-col row-start-2">
+      {/* Hero Section */}
+      <Hero />
+      
+      {/* دسته‌بندی‌های محبوب */}
+      <PopularCategories />
+      
+      {/* پرفروش‌ترین‌ها */}
+      <BestSellers />
+      
+      {/* فروشنده‌های منتخب */}
+      <FeaturedSellers />
+      
+      {/* تخفیف‌های ویژه */}
+      <SpecialOffers />
+      
+      {/* تازه‌ها */}
+      <NewArrivals />
+      
+      {/* شبکه‌های اجتماعی */}
+      <SocialSection />
+    </main>
+  )
 }
 
 export default async function Home({
@@ -40,33 +76,5 @@ export default async function Home({
 }) {
   const { locale } = await params
 
-  return (
-    <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start text-primary">
-      <Hero
-        image="/images/hero/Image.jpg"
-        heading="Snag your style in a flash"
-        paragraph="Buy, sell, and discover pre-loved gems from the trendiest brands."
-        buttons={[
-          { label: "Buy now", path: "/categories" },
-          {
-            label: "Sell now",
-            path:
-              process.env.NEXT_PUBLIC_ALGOLIA_ID === "UO3C5Y8NHX"
-                ? "https://vendor-sandbox.vercel.app/"
-                : "https://vendor.mercurjs.com",
-          },
-        ]}
-      />
-      <div className="px-4 lg:px-8 w-full">
-        <HomeProductSection heading="trending listings" locale={locale} home />
-      </div>
-      {/* <HomePopularBrandsSection />*/}
-      <div className="px-4 lg:px-8 w-full">
-        <HomeCategories heading="SHOP BY CATEGORY" />
-      </div>
-      <BannerSection />
-      <ShopByStyleSection />
-      <BlogSection />
-    </main>
-  )
+  return <HomeContent locale={locale} />
 }

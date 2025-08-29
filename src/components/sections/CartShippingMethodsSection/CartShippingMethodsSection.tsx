@@ -46,11 +46,24 @@ type ShippingProps = {
     | (StoreCardShippingMethod &
         { rules: any; seller_id: string; price_type: string; id: string }[])
     | null
+  // New embedding props
+  embedded?: boolean
+  hideHeader?: boolean
+  showAsCards?: boolean
+  showContinue?: boolean
+  selectedId?: string | null
+  onSelectedChange?: (id: string | null) => void
 }
 
 const CartShippingMethodsSection: React.FC<ShippingProps> = ({
   cart,
   availableShippingMethods,
+  embedded = false,
+  hideHeader = false,
+  showAsCards = false,
+  showContinue = true,
+  selectedId,
+  onSelectedChange,
 }) => {
   const [isLoadingPrices, setIsLoadingPrices] = useState(false)
   const [calculatedPricesMap, setCalculatedPricesMap] = useState<
@@ -66,7 +79,8 @@ const CartShippingMethodsSection: React.FC<ShippingProps> = ({
   const router = useRouter()
   const pathname = usePathname()
 
-  const isOpen = searchParams.get("step") === "delivery"
+  const isQueryOpen = searchParams.get("step") === "delivery"
+  const isOpen = embedded ? true : isQueryOpen
 
   const _shippingMethods = availableShippingMethods?.filter(
     (sm) =>
@@ -115,10 +129,6 @@ const CartShippingMethodsSection: React.FC<ShippingProps> = ({
     }
   }, [availableShippingMethods])
 
-  const handleSubmit = () => {
-    router.push(pathname + "?step=payment", { scroll: false })
-  }
-
   const handleSetShippingMethod = async (id: string | null) => {
     setIsLoadingPrices(true)
     setError(null)
@@ -134,6 +144,7 @@ const CartShippingMethodsSection: React.FC<ShippingProps> = ({
       }
     )
 
+    onSelectedChange && onSelectedChange(id)
     setIsLoadingPrices(false)
   }
 
@@ -164,33 +175,8 @@ const CartShippingMethodsSection: React.FC<ShippingProps> = ({
 
   return (
     <div className="border p-4 rounded-sm bg-ui-bg-interactive">
-      {/* {missingModal && (
-        <Modal
-          heading="Missing seller shipping option"
-          onClose={() => router.push(`/${pathname.split("/")[1]}/cart`)}
-        >
-          <div className="p-4">
-            <h2 className="heading-sm">
-              Some of the sellers in your cart do not have shipping options.
-            </h2>
-
-            <p className="text-md mt-3">
-              Please remove the{" "}
-              <span className="font-bold">
-                {missingSellers?.map(
-                  (seller, index) =>
-                    `${seller}${
-                      index === missingSellers.length - 1 ? " " : ", "
-                    }`
-                )}
-              </span>{" "}
-              items or contact{" "}
-              {missingSellers && missingSellers?.length > 1 ? "them" : "him"} to
-              get the shipping options.
-            </p>
-          </div>
-        </Modal>
-      )} */}
+      {/* Header */}
+      {!hideHeader && (
       <div className="flex flex-row items-center justify-between mb-6">
         <Heading
           level="h2"
@@ -209,17 +195,68 @@ const CartShippingMethodsSection: React.FC<ShippingProps> = ({
           </Text>
         )}
       </div>
+      )}
+
+      {/* Embedded/Open content */}
       {isOpen ? (
         <>
           <div className="grid">
             <div data-testid="delivery-options-container">
               <div className="pb-8 md:pt-0 pt-2">
                 {Object.keys(groupedBySellerId).map((key) => {
+                  const methods = groupedBySellerId[key]
                   return (
                     <div key={key} className="mb-4">
+                      {!hideHeader && (
                       <Heading level="h3" className="mb-2">
-                        {groupedBySellerId[key][0].seller_name}
+                          {methods[0].seller_name}
                       </Heading>
+                      )}
+
+                      {showAsCards ? (
+                        <div className="grid grid-cols-1 gap-3">
+                          {methods.map((option: any) => {
+                            const price =
+                              option.price_type === "flat"
+                                ? option.amount
+                                : calculatedPricesMap[option.id]
+                            const formattedPrice = price
+                              ? convertToLocale({
+                                  amount: price,
+                                  currency_code: cart?.currency_code,
+                                })
+                              : "-"
+                            const isSelected =
+                              selectedId
+                                ? selectedId === option.id
+                                : cart.shipping_methods?.[0]?.id === option.id
+                            return (
+                              <button
+                                key={option.id}
+                                type="button"
+                                onClick={() => handleSetShippingMethod(option.id)}
+                                className={clsx(
+                                  "w-full text-left border rounded-md p-4 hover:bg-gray-50",
+                                  isSelected && "ring-2 ring-primary"
+                                )}
+                              >
+                                <div className="flex items-center justify-between">
+                                  <div className="flex flex-col">
+                                    <span className="font-medium">{option.name}</span>
+                                    {/* Placeholder for delivery time if available */}
+                                    {option?.data?.delivery_time && (
+                                      <span className="text-sm text-gray-600">
+                                        {option.data.delivery_time}
+                                      </span>
+                                    )}
+                                  </div>
+                                  <div className="font-medium">{formattedPrice}</div>
+                                </div>
+                              </button>
+                            )
+                          })}
+                        </div>
+                      ) : (
                       <Listbox
                         value={cart.shipping_methods?.[0]?.id}
                         onChange={(value) => {
@@ -258,7 +295,7 @@ const CartShippingMethodsSection: React.FC<ShippingProps> = ({
                               className="absolute z-20 w-full overflow-auto text-small-regular bg-white border rounded-lg border-top-0 max-h-60 focus:outline-none sm:text-sm"
                               data-testid="shipping-address-options"
                             >
-                              {groupedBySellerId[key].map((option: any) => {
+                                {methods.map((option: any) => {
                                 return (
                                   <Listbox.Option
                                     className="cursor-pointer select-none relative pl-6 pr-10 hover:bg-gray-50 py-4 border-b"
@@ -289,10 +326,11 @@ const CartShippingMethodsSection: React.FC<ShippingProps> = ({
                           </Transition>
                         </div>
                       </Listbox>
+                      )}
                     </div>
                   )
                 })}
-                {cart && (cart.shipping_methods?.length ?? 0) > 0 && (
+                {cart && (cart.shipping_methods?.length ?? 0) > 0 && !showAsCards && (
                   <div className="flex flex-col">
                     {cart.shipping_methods?.map((method) => (
                       <CartShippingMethodRow
@@ -311,14 +349,16 @@ const CartShippingMethodsSection: React.FC<ShippingProps> = ({
               error={error}
               data-testid="delivery-option-error-message"
             />
+            {showContinue && (
             <Button
-              onClick={handleSubmit}
+                onClick={() => router.push(pathname + "?step=payment", { scroll: false })}
               variant="tonal"
               disabled={!cart.shipping_methods?.[0]}
               loading={isLoadingPrices}
             >
               Continue to payment
             </Button>
+            )}
           </div>
         </>
       ) : (

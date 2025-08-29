@@ -22,25 +22,25 @@ export const OrderConfirmedSection = ({
               level="h1"
               className="flex flex-col gap-y-3 text-ui-fg-base text-3xl mb-4"
             >
-              <span>Thank you!</span>
-              <span>Your order was placed successfully.</span>
+              <span>متشکرم!</span>
+              <span>سفارش شما با موفقیت ثبت شد.</span>
             </Heading>
 
             <Text>
-              We have sent the order confirmation details to{" "}
+              جزئیات تأیید سفارش به آدرس{" "}
               <span
                 className="text-ui-fg-medium-plus font-semibold"
                 data-testid="order-email"
               >
                 {order.email}
               </span>
-              .
+              {" "}ارسال شد.
             </Text>
           </div>
-          {/* <OrderDetails order={order} />
+          <OrderDetails order={order} />
           <OrderItems order={order} />
           <OrderTotals totals={order} />
-          <OrderShipping order={order} /> */}
+          <OrderShipping order={order} />
           {/*<PaymentDetails order={order} />
           <Help /> */}
         </div>

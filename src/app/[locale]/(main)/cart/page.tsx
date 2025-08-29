@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function CartPage({}) {
   return (
-    <main className='container grid grid-cols-12'>
+    <main className='container flex justify-center'>
       <Suspense fallback={<>Loading...</>}>
         <Cart />
       </Suspense>

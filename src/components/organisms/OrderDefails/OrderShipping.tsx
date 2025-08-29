@@ -14,7 +14,7 @@ const OrderShipping = ({ order }: ShippingDetailsProps) => {
     <div className="border rounded-sm p-4">
       <div>
         <Text className="txt-medium-plus text-ui-fg-base mb-1 font-bold">
-          Shipping Address
+          آدرس ارسال
         </Text>
         <Text className="txt-medium text-ui-fg-subtle">
           {order.shipping_address?.first_name}{" "}
@@ -34,7 +34,7 @@ const OrderShipping = ({ order }: ShippingDetailsProps) => {
 
       <div className="mt-4" data-testid="shipping-contact-summary">
         <Text className="txt-medium-plus text-ui-fg-base mb-1 font-bold">
-          Contact
+          اطلاعات تماس
         </Text>
         <Text className="txt-medium text-ui-fg-subtle">
           {order.shipping_address?.phone}
@@ -44,7 +44,7 @@ const OrderShipping = ({ order }: ShippingDetailsProps) => {
 
       <div className="mt-4" data-testid="shipping-method-summary">
         <Text className="txt-medium-plus text-ui-fg-base mb-1 font-bold">
-          Delivery method
+          روش ارسال
         </Text>
         <Text className="txt-medium text-ui-fg-subtle">
           {(order as any).shipping_methods[0]?.name} (
@@ -59,7 +59,7 @@ const OrderShipping = ({ order }: ShippingDetailsProps) => {
       </div>
       <div className="mt-4">
         <Text className="txt-medium-plus text-ui-fg-base mb-1 font-bold">
-          Payment method
+          روش پرداخت
         </Text>
         <div>
           {payment && (

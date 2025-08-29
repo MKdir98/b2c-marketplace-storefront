@@ -14,10 +14,10 @@ import { addCustomerAddress, updateCustomerAddress } from "@/lib/data/customer"
 import { HttpTypes } from "@medusajs/types"
 import CountrySelect from "@/components/cells/CountrySelect/CountrySelect"
 import { useState } from "react"
+import { getCurrentLocation, reverseGeocode } from "@/lib/services/geolocation"
 
 interface Props {
   defaultValues?: AddressFormData
-
   regions: HttpTypes.StoreRegion[]
   handleClose?: () => void
 }
@@ -33,10 +33,11 @@ export const emptyDefaultAddressValues = {
   company: "",
   province: "",
   phone: "",
-  metadata: {},
+  latitude: null,
+  longitude: null,
 }
 
-export const AddressForm: React.FC<Props> = ({ defaultValues, ...props }) => {
+export const AddressForm: React.FC<Props> = ({ defaultValues, regions, handleClose }) => {
   const methods = useForm<AddressFormData>({
     resolver: zodResolver(addressSchema),
     defaultValues: defaultValues || emptyDefaultAddressValues,
@@ -44,22 +45,61 @@ export const AddressForm: React.FC<Props> = ({ defaultValues, ...props }) => {
 
   return (
     <FormProvider {...methods}>
-      <Form {...props} />
+      <Form regions={regions} handleClose={handleClose} />
     </FormProvider>
   )
 }
 
 const Form: React.FC<Props> = ({ regions, handleClose }) => {
   const [error, setError] = useState<string>()
+  const [isGettingLocation, setIsGettingLocation] = useState(false)
+  const [showMapSelector, setShowMapSelector] = useState(false)
   const {
     handleSubmit,
     register,
-    formState: { errors },
+    setValue,
     watch,
-  } = useFormContext()
+    formState: { errors },
+  } = useFormContext<AddressFormData>()
+
+  const watchedLatitude = watch("latitude")
+  const watchedLongitude = watch("longitude")
 
   const region = {
     countries: regions.flatMap((region) => region.countries),
+  }
+
+  const handleUseCurrentLocation = async () => {
+    setIsGettingLocation(true)
+    setError("")
+    
+    try {
+      const coordinates = await getCurrentLocation()
+      const addressData = await reverseGeocode(coordinates.latitude, coordinates.longitude)
+      
+      if (addressData) {
+        setValue("address", addressData.address_1)
+        setValue("city", addressData.city)
+        setValue("postalCode", addressData.postal_code)
+        setValue("province", addressData.province || "")
+        setValue("countryCode", addressData.country_code)
+        setValue("latitude", addressData.latitude)
+        setValue("longitude", addressData.longitude)
+      } else {
+        // Still save coordinates even if address lookup fails
+        setValue("latitude", coordinates.latitude)
+        setValue("longitude", coordinates.longitude)
+      }
+    } catch (error) {
+      setError(error instanceof Error ? error.message : "Failed to get location")
+    } finally {
+      setIsGettingLocation(false)
+    }
+  }
+
+  const handleClearLocation = () => {
+    setValue("latitude", null)
+    setValue("longitude", null)
   }
 
   const submit = async (data: FieldValues) => {
@@ -76,6 +116,10 @@ const Form: React.FC<Props> = ({ regions, handleClose }) => {
     formData.append("postal_code", data.postalCode)
     formData.append("company", data.company)
     formData.append("phone", data.phone)
+    
+    // Add geolocation data
+    if (data.latitude) formData.append("latitude", data.latitude.toString())
+    if (data.longitude) formData.append("longitude", data.longitude.toString())
 
     const res = data.addressId
       ? await updateCustomerAddress(formData)
@@ -92,80 +136,141 @@ const Form: React.FC<Props> = ({ regions, handleClose }) => {
 
   return (
     <form onSubmit={handleSubmit(submit)}>
-      <div className="px-4 space-y-4">
-        <div className="max-w-full grid grid-cols-2 items-top gap-4 mb-4">
-          <LabeledInput
-            label="Address name"
-            placeholder="Type address name"
-            className="col-span-2"
-            error={errors.firstName as FieldError}
-            {...register("addressName")}
-          />
-          <LabeledInput
-            label="First name"
-            placeholder="Type first name"
-            error={errors.firstName as FieldError}
-            {...register("firstName")}
-          />
-          <LabeledInput
-            label="Last name"
-            placeholder="Type last name"
-            error={errors.firstName as FieldError}
-            {...register("lastName")}
-          />
-          <LabeledInput
-            label="Company (optional)"
-            placeholder="Type company"
-            error={errors.company as FieldError}
-            {...register("company")}
-          />
-          <LabeledInput
-            label="Address"
-            placeholder="Type address"
-            error={errors.address as FieldError}
-            {...register("address")}
-          />
-          <LabeledInput
-            label="City"
-            placeholder="Type city"
-            error={errors.city as FieldError}
-            {...register("city")}
-          />
-          <LabeledInput
-            label="Postal code"
-            placeholder="Type postal code"
-            error={errors.postalCode as FieldError}
-            {...register("postalCode")}
-          />
-          <LabeledInput
-            label="State / Province"
-            placeholder="Type state / province"
-            error={errors.province as FieldError}
-            {...register("province")}
-          />
-          <div>
-            <CountrySelect
-              region={region as HttpTypes.StoreRegion}
-              {...register("countryCode")}
-              value={watch("countryCode")}
-              className="h-12"
-            />
-            {errors.countryCode && (
-              <p className="label-sm text-negative">
-                {(errors.countryCode as FieldError).message}
-              </p>
-            )}
-          </div>
+      {error && (
+        <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md text-red-700 text-sm">
+          {error}
+        </div>
+      )}
 
+      {/* Geolocation Controls */}
+      <div className="mb-6 p-4 bg-gray-50 rounded-lg">
+        <h3 className="text-sm font-medium mb-3">📍 Location Options</h3>
+        <div className="flex gap-2 mb-3">
+          <Button
+            type="button"
+            variant="filled"
+            onClick={handleUseCurrentLocation}
+            disabled={isGettingLocation}
+            className="text-xs px-3 py-1"
+          >
+            {isGettingLocation ? "Getting Location..." : "Use Current Location"}
+          </Button>
+          <Button
+            type="button"
+            variant="text"
+            onClick={() => setShowMapSelector(!showMapSelector)}
+            className="text-xs px-3 py-1"
+          >
+            {showMapSelector ? "Hide Map" : "Select on Map"}
+          </Button>
+          {(watchedLatitude && watchedLongitude) && (
+            <Button
+              type="button"
+              variant="text"
+              onClick={handleClearLocation}
+              className="text-xs px-3 py-1 text-red-600"
+            >
+              Clear Location
+            </Button>
+          )}
+        </div>
+        
+        {(watchedLatitude && watchedLongitude) && (
+          <div className="text-xs text-green-700 bg-green-50 p-2 rounded">
+            📍 Coordinates: {watchedLatitude.toFixed(6)}, {watchedLongitude.toFixed(6)}
+          </div>
+        )}
+
+        {showMapSelector && (
+          <div className="mt-3 p-4 bg-white rounded border">
+            <p className="text-sm text-gray-600 mb-2">
+              Interactive map will be available after installing map dependencies.
+              For now, use &quot;Use Current Location&quot; button above.
+            </p>
+            {/* Future: Add map component here */}
+          </div>
+        )}
+      </div>
+
+      <div className="grid grid-cols-1 gap-4">
+        <LabeledInput
+          label="Address Name *"
+          placeholder="e.g., Home, Work, Office"
+          {...register("addressName")}
+          error={errors.addressName}
+        />
+        
+        <div className="grid grid-cols-2 gap-4">
           <LabeledInput
-            label="Phone"
-            placeholder="Type phone number"
-            error={errors.phone as FieldError}
-            {...register("phone")}
+            label="First Name *"
+            {...register("firstName")}
+            error={errors.firstName}
+          />
+          <LabeledInput
+            label="Last Name *"
+            {...register("lastName")}
+            error={errors.lastName}
           />
         </div>
-        {error && <p className="label-md text-negative">{error}</p>}
-        <Button className="w-full ">Save address</Button>
+        
+        <LabeledInput
+          label="Address *"
+          {...register("address")}
+          error={errors.address}
+        />
+        
+        <LabeledInput
+          label="Company"
+          {...register("company")}
+          error={errors.company}
+        />
+        
+        <div className="grid grid-cols-2 gap-4">
+          <LabeledInput
+            label="City *"
+            {...register("city")}
+            error={errors.city}
+          />
+          <LabeledInput
+            label="Postal Code *"
+            {...register("postalCode")}
+            error={errors.postalCode}
+          />
+        </div>
+        
+        <div className="grid grid-cols-2 gap-4">
+          <CountrySelect
+            {...register("countryCode")}
+            placeholder="Select Country"
+            region={regions[0]}
+          />
+          <LabeledInput
+            label="State/Province"
+            {...register("province")}
+            error={errors.province}
+          />
+        </div>
+        
+        <LabeledInput
+          label="Phone *"
+          {...register("phone")}
+          error={errors.phone}
+        />
+
+        {/* Hidden fields for coordinates */}
+        <input type="hidden" {...register("latitude")} />
+        <input type="hidden" {...register("longitude")} />
+      </div>
+
+      <div className="flex gap-3 pt-4 mt-6 border-t">
+        <Button type="submit" className="flex-1">
+          Save Address
+        </Button>
+        {handleClose && (
+          <Button type="button" variant="text" onClick={handleClose}>
+            Cancel
+          </Button>
+        )}
       </div>
     </form>
   )

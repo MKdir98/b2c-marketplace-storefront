@@ -1,0 +1,175 @@
+{
+  "common": {
+    "noResults": "نتیجه‌ای یافت نشد",
+    "noResultsDescription": "متأسفانه هیچ محصولی با معیارهای شما پیدا نشد",
+    "listings": "آگهی",
+    "chat": "چت",
+    "writeToSeller": "پیام به فروشنده",
+    "chatUnavailable": "چت موقتاً در دسترس نیست",
+    "searchProduct": "جستجوی محصول",
+    "sellNow": "فروش کنید"
+  },
+  "navigation": {
+    "home": "خانه",
+    "categories": "دسته‌بندی‌ها",
+    "products": "محصولات",
+    "search": "جستجو",
+    "cart": "سبد خرید",
+    "account": "حساب کاربری",
+    "messages": "پیام‌ها",
+    "shop": "فروشگاه",
+    "womensShoes": "کفش زنانه",
+    "mensShoes": "کفش مردانه", 
+    "bags": "کیف و اکسسوری",
+    "kidsShoes": "کفش بچه‌گانه",
+    "newArrivals": "جدیدترین‌ها",
+    "bestSellers": "پرفروش‌ترین‌ها"
+  },
+  "product": {
+    "addToCart": "افزودن به سبد",
+    "buyNow": "خرید فوری",
+    "outOfStock": "ناموجود",
+    "inStock": "موجود",
+    "price": "قیمت",
+    "description": "توضیحات",
+    "specifications": "مشخصات",
+    "reviews": "نظرات"
+  },
+  "filters": {
+    "price": "قیمت",
+    "color": "رنگ",
+    "size": "سایز",
+    "condition": "وضعیت",
+    "brand": "برند",
+    "category": "دسته‌بندی",
+    "clearAll": "پاک کردن همه",
+    "apply": "اعمال"
+  },
+  "auth": {
+    "signIn": "ورود",
+    "signUp": "ثبت‌نام",
+    "signOut": "خروج",
+    "email": "ایمیل",
+    "password": "رمز عبور",
+    "confirmPassword": "تأیید رمز عبور",
+    "forgotPassword": "فراموشی رمز عبور؟"
+  },
+  "cart": {
+    "empty": "سبد خرید شما خالی است",
+    "total": "مجموع",
+    "checkout": "تسویه حساب",
+    "quantity": "تعداد",
+    "remove": "حذف"
+  },
+  "home": {
+    "hero": {
+      "title": "کلکسیون ReVelvet™ جدید",
+      "subtitle": "کفش و کیف‌های شستنی از مواد بازیافتی",
+      "shopCollection": "مشاهده کلکسیون",
+      "freeShipping": "ارسال رایگان بالای ۲۰۰€"
+    },
+    "sections": {
+      "newArrivals": "جدیدترین‌ها",
+      "bestSellers": "پرفروش‌ترین‌ها", 
+      "womensShoes": "کفش زنانه",
+      "mensShoes": "کفش مردانه",
+      "bagsAccessories": "کیف و اکسسوری",
+      "theClogShop": "فروشگاه کلاک",
+      "fanFaveSlingbacks": "اسلینگ‌بک محبوب",
+      "pennyLoafers": "پنی لوفر",
+      "almondSlingbacks": "اسلینگ‌بک آلفا",
+      "doubleBuckleMj": "ماری جین دولبه",
+      "casualClog": "کلاک کژوال",
+      "sustainability": "پایداری",
+      "popularProducts": "محصولات محبوب",
+      "shopByCategory": "خرید بر اساس دسته‌بندی",
+      "howItWorks": "چگونه کار می‌کند",
+      "featuredServices": "خدمات ویژه",
+      "trustIndicators": "چرا ما را انتخاب کنید"
+    },
+    "products": {
+      "maxSquareMj": "ماری جین مربعی مکس",
+      "doubleBuckleMj": "ماری جین دولبه",
+      "pennyLoafer": "پنی لوفر",
+      "almondSlingback": "اسلینگ‌بک آلفا", 
+      "casualClog": "کلاک کژوال",
+      "appleCrisp": "سیب سرخ",
+      "syrah": "سیرا",
+      "lollipopRed": "قرمز آبنباتی",
+      "dove": "کبوتر",
+      "navy": "سرمه‌ای",
+      "black": "سیاه",
+      "evergreen": "سبز همیشه‌بهار"
+    },
+    "categories": {
+      "tools": "ابزار و تجهیزات",
+      "consultation": "خدمات مشاوره",
+      "clothing": "پوشاک",
+      "electronics": "الکترونیک",
+      "accessories": "لوازم جانبی",
+      "sports": "ورزش",
+      "books": "کتاب و مجله",
+      "home": "خانه و آشپزخانه"
+    },
+    "howItWorks": {
+      "step1": {
+        "title": "جستجو کنید",
+        "description": "محصول یا خدمت مورد نظرتان را پیدا کنید"
+      },
+      "step2": {
+        "title": "خرید کنید",
+        "description": "با اطمینان خرید کنید یا خدمات را دریافت کنید"
+      },
+      "step3": {
+        "title": "لذت ببرید",
+        "description": "از خرید خود راضی باشید"
+      }
+    },
+    "services": {
+      "consultation": {
+        "title": "مشاوره تخصصی",
+        "description": "از متخصصان مشاوره بگیرید"
+      },
+      "support": {
+        "title": "پشتیبانی ۲۴/۷",
+        "description": "همیشه در کنار شما هستیم"
+      },
+      "delivery": {
+        "title": "تحویل سریع",
+        "description": "ارسال در کمترین زمان"
+      }
+    },
+    "trust": {
+      "secure": {
+        "title": "پرداخت امن",
+        "description": "تراکنش‌های کاملاً ایمن"
+      },
+      "guarantee": {
+        "title": "ضمانت کیفیت",
+        "description": "کیفیت تضمین شده"
+      },
+      "support": {
+        "title": "پشتیبانی عالی",
+        "description": "خدمات پس از فروش"
+      }
+    },
+    "stats": {
+      "products": "محصول موجود",
+      "customers": "مشتری راضی",
+      "orders": "سفارش تکمیل شده"
+    },
+    "rothys": {
+      "revelvetCollection": "کلکسیون ReVelvet",
+      "newInRevelvet": "جدید در ReVelvet",
+      "maryJanes": "ماری جین",
+      "pickYourPenny": "پنی خود را انتخاب کنید",
+      "matchYourMini": "با کوچولو خود جفت شوید",
+      "seenOnTikTok": "در TikTok دیده شده",
+      "washableShoes": "کفش‌های شستنی",
+      "recycledMaterials": "از مواد بازیافتی",
+      "millionBottles": "میلیون‌ها بطری بازیافتی",
+      "sustainabilityTitle": "پایداری در هر قدمی",
+      "sustainabilityDesc": "ما متعهد هستیم که محصولات پایدار تولید کنیم"
+    }
+  }
+}

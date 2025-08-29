@@ -19,8 +19,6 @@ export const CartItemsProducts = ({
   return (
     <div>
       {products.map((product) => {
-        const { options } = product.variant ?? {}
-
         const total = convertToLocale({
           amount: product.subtotal,
           currency_code,
@@ -52,13 +50,9 @@ export const CartItemsProducts = ({
 
             <div className="w-full p-2">
               <div className="flex justify-between lg:mb-4">
-                <LocalizedClientLink
-                  href={`/products/${product.product_handle}`}
-                >
+                <LocalizedClientLink href={`/products/${product.product_handle}`}>
                   <div className="w-[100px] md:w-[200px] lg:w-[280px] mb-4 lg:mb-0">
-                    <h3 className="heading-xs uppercase truncate">
-                      {product.subtitle}
-                    </h3>
+                    <h3 className="heading-xs truncate">{product.product_title}</h3>
                   </div>
                 </LocalizedClientLink>
                 {delete_item && (
@@ -67,14 +61,8 @@ export const CartItemsProducts = ({
                   </div>
                 )}
               </div>
-              <div className="lg:flex justify-between -mt-4 lg:mt-0">
+              <div className="lg:flex justify-between -mt-2 lg:mt-0">
                 <div className="label-md text-secondary">
-                  {options?.map(({ option, id, value }) => (
-                    <p key={id}>
-                      {option?.title}:{" "}
-                      <span className="text-primary">{value}</span>
-                    </p>
-                  ))}
                   {change_quantity ? (
                     <UpdateCartItemButton
                       quantity={product.quantity}
@@ -82,8 +70,7 @@ export const CartItemsProducts = ({
                     />
                   ) : (
                     <p>
-                      Quantity:{" "}
-                      <span className="text-primary">{product.quantity}</span>
+                      تعداد: <span className="text-primary">{product.quantity}</span>
                     </p>
                   )}
                 </div>

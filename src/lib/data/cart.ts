@@ -362,6 +362,10 @@ export async function setAddresses(currentState: unknown, formData: FormData) {
         country_code: formData.get("shipping_address.country_code"),
         province: formData.get("shipping_address.province"),
         phone: formData.get("shipping_address.phone"),
+        metadata: {
+          latitude: formData.get("shipping_address.latitude") ? parseFloat(formData.get("shipping_address.latitude") as string) : null,
+          longitude: formData.get("shipping_address.longitude") ? parseFloat(formData.get("shipping_address.longitude") as string) : null,
+        }
       },
       email: formData.get("email"),
     } as any

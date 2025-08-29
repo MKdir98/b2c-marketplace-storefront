@@ -1,11 +1,19 @@
 import type { Metadata } from "next"
-import { Funnel_Display } from "next/font/google"
+import { Funnel_Display, Vazirmatn } from "next/font/google"
 import "./globals.css"
 import { Toaster } from "@medusajs/ui"
+import { NextIntlClientProvider } from 'next-intl'
+import { getLocale, getMessages } from 'next-intl/server'
 
 const funnelDisplay = Funnel_Display({
   variable: "--font-funnel-sans",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
+})
+
+const vazirmatn = Vazirmatn({
+  variable: "--font-vazirmatn",
+  subsets: ["arabic"],
   weight: ["300", "400", "500", "600"],
 })
 
@@ -29,20 +37,27 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({
   children,
-  params,
 }: Readonly<{
   children: React.ReactNode
-  params: Promise<{ locale: string }>
 }>) {
-  const { locale } = await params
+  // Get current locale from next-intl
+  const locale = await getLocale()
+  
+  // RTL languages
+  const isRTL = locale === 'ir'
+  
+  // Get messages for the current locale
+  const messages = await getMessages()
 
   return (
-    <html lang={locale} className="">
+    <html lang={locale} dir={isRTL ? 'rtl' : 'ltr'} className="">
       <body
-        className={`${funnelDisplay.className} antialiased bg-primary text-secondary relative`}
+        className={`${vazirmatn.className} antialiased bg-primary text-secondary relative`}
       >
-        {children}
-        <Toaster position="top-right" />
+        <NextIntlClientProvider messages={messages}>
+          {children}
+          <Toaster position="top-right" />
+        </NextIntlClientProvider>
       </body>
     </html>
   )

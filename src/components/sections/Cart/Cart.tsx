@@ -1,37 +1,35 @@
-import { Button } from "@/components/atoms"
 import { CartItems, CartSummary } from "@/components/organisms"
-import LocalizedClientLink from "@/components/molecules/LocalizedLink/LocalizedLink"
 import { retrieveCart } from "@/lib/data/cart"
-import CartPromotionCode from "../CartReview/CartPromotionCode"
+import { Button } from "@/components/atoms"
+import LocalizedClientLink from "@/components/molecules/LocalizedLink/LocalizedLink"
 
 export const Cart = async () => {
   const cart = await retrieveCart()
 
   return (
-    <>
-      <div className="col-span-12 lg:col-span-6">
-        <CartItems cart={cart} />
+    <div className="w-full flex flex-col items-center">
+      <div className="w-full max-w-3xl">
+        <CartItems cart={cart} showSellerHeader={false} />
       </div>
-      <div className="lg:col-span-2"></div>
-      <div className="col-span-12 lg:col-span-4">
-        <div className="w-full mb-6 border rounded-sm p-4">
-          <CartPromotionCode cart={cart} />
-        </div>
+      <div className="w-full max-w-md mt-6">
         <div className="border rounded-sm p-4 h-fit">
           <CartSummary
             item_total={cart?.item_subtotal || 0}
-            shipping_total={cart?.shipping_subtotal || 0}
+            shipping_total={0}
             total={cart?.total || 0}
             currency_code={cart?.currency_code || ""}
-            tax={cart?.tax_total || 0}
+            tax={0}
+            show_delivery={false}
+            show_tax={false}
+            labels={{ items: "اقلام", total: "جمع کل" }}
           />
           <LocalizedClientLink href="/checkout?step=address">
             <Button className="w-full py-3 flex justify-center items-center">
-              Go to checkout
+              ادامه خرید
             </Button>
           </LocalizedClientLink>
         </div>
       </div>
-    </>
+    </div>
   )
 }

@@ -15,6 +15,15 @@ export const convertToLocale = ({
   maximumFractionDigits,
   locale = "en-US",
 }: ConvertToLocaleParams) => {
+  // For Iranian Rial, show custom format with "ریال"
+  if (currency_code?.toLowerCase() === 'irr') {
+    const formattedAmount = new Intl.NumberFormat('fa-IR', {
+      minimumFractionDigits,
+      maximumFractionDigits,
+    }).format(amount)
+    return `${formattedAmount} ریال`
+  }
+  
   return currency_code && !isEmpty(currency_code)
     ? new Intl.NumberFormat(locale, {
         style: "currency",

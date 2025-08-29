@@ -1,6 +1,4 @@
-import { Divider } from "@/components/atoms"
 import { SingleProductSeller } from "@/types/product"
-import { format } from "date-fns"
 import { SellerAvatar } from "../SellerAvatar/SellerAvatar"
 import LocalizedClientLink from "@/components/molecules/LocalizedLink/LocalizedLink"
 
@@ -16,14 +14,6 @@ export const CartItemsHeader = ({
 
         <div className="lg:flex gap-2">
           <p className="uppercase heading-xs">{seller.name}</p>
-          {seller.id !== "fleek" && (
-            <div className="flex items-center gap-2">
-              <Divider square />
-              <p className="label-md text-secondary">
-                Joined: {format(seller.created_at || "", "yyyy-MM-dd")}
-              </p>
-            </div>
-          )}
         </div>
       </div>
     </LocalizedClientLink>

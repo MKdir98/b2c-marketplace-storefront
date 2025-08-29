@@ -8,6 +8,7 @@ import {
   ProductSidebar,
 } from "@/components/organisms"
 import { useSearchParams, useRouter } from "next/navigation"
+import { useTranslations } from 'next-intl'
 import { PRODUCT_LIMIT } from "@/const"
 import { ProductListingSkeleton } from "@/components/organisms/ProductListingSkeleton/ProductListingSkeleton"
 import { useEffect, useState } from "react"
@@ -26,20 +27,49 @@ interface SearchResults {
   processing_time: number
 }
 
+// Helper function to get translations with fallback
+const useTranslationsWithFallback = (locale?: string) => {
+  try {
+    const t = useTranslations('common')
+    return {
+      noResults: t('noResults'),
+      noResultsDescription: t('noResultsDescription'),
+      listings: t('listings')
+    }
+  } catch (error) {
+    // Fallback translations based on locale
+    if (locale === 'ir') {
+      return {
+        noResults: 'نتیجه‌ای یافت نشد',
+        noResultsDescription: 'متأسفانه هیچ محصولی با معیارهای شما پیدا نشد',
+        listings: 'آگهی'
+      }
+    }
+    return {
+      noResults: 'No results',
+      noResultsDescription: 'Sorry, we can\'t find any results for your criteria',
+      listings: 'listings'
+    }
+  }
+}
+
 export const ElasticsearchProductsListing = ({
   category_id,
   collection_id,
   seller_handle,
   locale = process.env.NEXT_PUBLIC_DEFAULT_REGION,
+  hideFilters = false,
 }: {
   category_id?: string
   collection_id?: string
   locale?: string
   seller_handle?: string
   currency_code?: string
+  hideFilters?: boolean
 }) => {
   const searchParams = useSearchParams()
   const router = useRouter()
+  const translations = useTranslationsWithFallback(locale)
   const [searchResults, setSearchResults] = useState<SearchResults | null>(null)
   const [products, setProducts] = useState<HttpTypes.StoreProduct[] | null>(null)
   const [loading, setLoading] = useState(true)
@@ -158,21 +188,29 @@ export const ElasticsearchProductsListing = ({
   return (
     <>
       <div className="flex justify-between w-full items-center">
-        <div className="my-4 label-md">{`${count} listings`}</div>
+        <div className="my-4 label-md">
+          {count} {translations.listings}
+        </div>
       </div>
+      {!hideFilters && (
       <div className="hidden md:block">
         <ProductListingActiveFilters />
       </div>
+      )}
       <div className="md:flex gap-4">
+        {!hideFilters && (
         <div>
           <ProductSidebar />
         </div>
+        )}
         <div className="w-full">
           {!searchResults.products.length ? (
             <div className="text-center w-full my-10">
-              <h2 className="uppercase text-primary heading-lg">no results</h2>
+              <h2 className="uppercase text-primary heading-lg">
+                {translations.noResults}
+              </h2>
               <p className="mt-4 text-lg">
-                Sorry, we can&apos;t find any results for your criteria
+                {translations.noResultsDescription}
               </p>
             </div>
           ) : (

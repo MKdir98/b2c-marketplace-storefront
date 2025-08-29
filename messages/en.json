@@ -1,0 +1,179 @@
+{
+  "common": {
+    "noResults": "No results",
+    "noResultsDescription": "Sorry, we can't find any results for your criteria",
+    "listings": "listings",
+    "chat": "Chat",
+    "writeToSeller": "Write to seller",
+    "chatUnavailable": "Chat is temporarily unavailable",
+    "searchProduct": "Search product",
+    "sellNow": "Sell now"
+  },
+  "navigation": {
+    "home": "Home",
+    "categories": "Categories",
+    "products": "Products",
+    "search": "Search",
+    "cart": "Cart",
+    "account": "Account",
+    "messages": "Messages",
+    "shop": "Shop",
+    "womensShoes": "Women's Shoes",
+    "mensShoes": "Men's Shoes",
+    "bags": "Bags & Accessories",
+    "kidsShoes": "Kids Shoes",
+    "newArrivals": "New Arrivals",
+    "bestSellers": "Best Sellers"
+  },
+  "product": {
+    "addToCart": "Add to Cart",
+    "buyNow": "Buy Now",
+    "outOfStock": "Out of Stock",
+    "in Stock": "In Stock",
+    "price": "Price",
+    "description": "Description",
+    "specifications": "Specifications",
+    "reviews": "Reviews"
+  },
+  "filters": {
+    "price": "Price",
+    "color": "Color",
+    "size": "Size",
+    "condition": "Condition",
+    "brand": "Brand",
+    "category": "Category",
+    "clearAll": "Clear All",
+    "apply": "Apply"
+  },
+  "auth": {
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "signOut": "Sign Out",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "forgotPassword": "Forgot Password?"
+  },
+  "cart": {
+    "empty": "Your cart is empty",
+    "total": "Total",
+    "checkout": "Checkout",
+    "quantity": "Quantity",
+    "remove": "Remove"
+  },
+  "home": {
+    "hero": {
+      "title": "New ReVelvet™ Collection",
+      "subtitle": "Washable shoes and bags made with recycled materials",
+      "searchPlaceholder": "What are you looking for?",
+      "browseProducts": "Browse Products",
+      "startSelling": "Start Selling",
+      "shopCollection": "Shop The Collection",
+      "freeShipping": "Free shipping over €200"
+    },
+    "sections": {
+      "newArrivals": "New Arrivals",
+      "bestSellers": "Best Sellers", 
+      "womensShoes": "Women's Shoes",
+      "mensShoes": "Men's Shoes",
+      "bagsAccessories": "Bags & Accessories",
+      "theClogShop": "The Clog Shop",
+      "fanFaveSlingbacks": "Fan-Fave Slingbacks",
+      "pennyLoafers": "Penny Loafers",
+      "almondSlingbacks": "Almond Slingbacks",
+      "doubleBuckleMj": "Double Buckle MJ",
+      "casualClog": "Casual Clog",
+      "sustainability": "Sustainability",
+      "popularProducts": "Popular Products",
+      "shopByCategory": "Shop by Category",
+      "howItWorks": "How It Works",
+      "featuredServices": "Featured Services",
+      "trustIndicators": "Why Choose Us"
+    },
+    "products": {
+      "maxSquareMj": "Max Square Mary Jane",
+      "doubleBuckleMj": "Double Buckle Mary Jane",
+      "pennyLoafer": "Penny Loafer",
+      "almondSlingback": "Almond Slingback", 
+      "casualClog": "Casual Clog",
+      "appleCrisp": "Apple Crisp",
+      "syrah": "Syrah",
+      "lollipopRed": "Lollipop Red",
+      "dove": "Dove",
+      "navy": "Navy",
+      "black": "Black",
+      "evergreen": "Evergreen"
+    },
+    "categories": {
+      "tools": "Tools & Equipment",
+      "consultation": "Consultation Services",
+      "clothing": "Clothing",
+      "electronics": "Electronics",
+      "accessories": "Accessories",
+      "sports": "Sports",
+      "books": "Books & Magazines",
+      "home": "Home & Kitchen"
+    },
+    "howItWorks": {
+      "step1": {
+        "title": "Search",
+        "description": "Find the product or service you need"
+      },
+      "step2": {
+        "title": "Purchase",
+        "description": "Buy with confidence or get the service"
+      },
+      "step3": {
+        "title": "Enjoy",
+        "description": "Be satisfied with your purchase"
+      }
+    },
+    "services": {
+      "consultation": {
+        "title": "Expert Consultation",
+        "description": "Get advice from specialists"
+      },
+      "support": {
+        "title": "24/7 Support",
+        "description": "We're always here for you"
+      },
+      "delivery": {
+        "title": "Fast Delivery",
+        "description": "Ship in the shortest time"
+      }
+    },
+    "trust": {
+      "secure": {
+        "title": "Secure Payment",
+        "description": "Fully secure transactions"
+      },
+      "guarantee": {
+        "title": "Quality Guarantee",
+        "description": "Guaranteed quality"
+      },
+      "support": {
+        "title": "Excellent Support",
+        "description": "After-sales service"
+      }
+    },
+    "stats": {
+      "products": "Available Products",
+      "customers": "Happy Customers",
+      "orders": "Orders Completed"
+    },
+    "rothys": {
+      "revelvetCollection": "ReVelvet Collection",
+      "newInRevelvet": "New in ReVelvet",
+      "maryJanes": "Mary Janes",
+      "pickYourPenny": "Pick Your Penny",
+      "matchYourMini": "Match your mini",
+      "seenOnTikTok": "Seen on TikTok",
+      "getTheLatest": "GET THE LATEST",
+      "washableShoes": "Washable Shoes",
+      "recycledMaterials": "Made with recycled materials",
+      "millionBottles": "Millions of recycled bottles",
+      "sustainabilityTitle": "Sustainability in every step",
+      "sustainabilityDesc": "We are committed to producing sustainable products"
+    }
+  }
+}
